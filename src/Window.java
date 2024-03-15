@@ -1,4 +1,3 @@
-import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
@@ -14,6 +13,11 @@ public class Window extends JFrame {
     private JTextField numOne;
     private JTextField numTwo;
     private JTextField numThree;
+    private JButton okay;
+    private String gameRegEx = "[0-9]";
+    TextFieldValidator numEntered;
+    Border startBorder = BorderFactory.createLineBorder(Color.RED, 1);
+    Border blackBorder = BorderFactory.createLineBorder(Color.BLACK,1);
 
 
     public Window(){
@@ -34,12 +38,33 @@ public class Window extends JFrame {
         // setting up the left pannel with the buttons and text fields. 
         leftPanel = new JPanel();
         JLabel enterMsg = new JLabel("Enter your three guesses (0-9)");
+        // setting up JText Area and event listeners for when user enters input
         numOne = new JTextField(8);
+        numOne.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e){
+                onUserInput(numOne);
+            }
+        });
         numTwo = new JTextField(8);
+        numTwo.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e){
+                onUserInput(numTwo);
+        
+            }
+        });
         numThree = new JTextField(8);
-        JButton okay = new JButton("OK");
+        numThree.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e){
+                onUserInput(numThree);
+            }
+        });
+        numOne.setBorder(startBorder);
+        numTwo.setBorder(startBorder);
+        numThree.setBorder(startBorder);
+        okay = new JButton("OK");
         okay.setPreferredSize(new Dimension(100,0));
-        //hooking up ervent listener
+        okay.setEnabled(false);
+        //hooking up ervent listener foir okay buttonhhhnb 
         okay.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 okClicked(e);
@@ -70,9 +95,8 @@ public class Window extends JFrame {
         rightPanel = new JPanel();
         JLabel hints = new JLabel("Hints:");
         JTextArea gameOutput = new JTextArea();
-        Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
         gameOutput.setPreferredSize(new Dimension(240,280));
-        gameOutput.setBorder(border);
+        gameOutput.setBorder(blackBorder);
         rightPanel.setSize(200,400);
          // setting mig layout
         rightPanel.setLayout(new MigLayout("",
@@ -87,13 +111,40 @@ public class Window extends JFrame {
         mainPanel.add(leftPanel);
         mainPanel.add(rightPanel);
     }
+
+    // ---------------------------------------------texField event handler
+    public void onUserInput (JTextField userInput){
+        // use the field passed to make new TextFieldValidatorObject
+        numEntered = new TextFieldValidator(userInput);
+        numEntered.setRegExp(gameRegEx);
+        JTextField thisOne = numEntered.getJTextField(); 
+        boolean checked = numEntered.check();
+        if(checked == false){
+            thisOne.setBorder(BorderFactory.createLineBorder(numEntered.getErrorColor()));
+        }else {
+            numEntered.reset();
+        }
+
+        // checks to see if the border colors of all three inputs is black and enables the ok button. if not, the button remains disabled. 
+        if ((numOne.getBorder()instanceof LineBorder && ((LineBorder) numOne.getBorder()).getLineColor().equals(Color.BLACK)) &&
+        (numTwo.getBorder()instanceof LineBorder && ((LineBorder) numTwo.getBorder()).getLineColor().equals(Color.BLACK))&&
+        (numThree.getBorder()instanceof LineBorder && ((LineBorder) numThree.getBorder()).getLineColor().equals(Color.BLACK))){
+            okay.setEnabled(true);
+        }else{
+            okay.setEnabled(false);
+        }
+      
+
+    }
     // --------------------------------------------button event handlers
     public void okClicked(ActionEvent e ){
         System.out.println("ok clicked");
     }
 
     public void resetClicked(ActionEvent e ){
-        System.out.println("reset clicked");
+        numOne.setText("");
+        numTwo.setText("");
+        numThree.setText("");
     }
     
 
