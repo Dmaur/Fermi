@@ -119,6 +119,7 @@ public class Window extends JFrame {
         numEntered.setRegExp(gameRegEx);
         JTextField thisOne = numEntered.getJTextField(); 
         boolean checked = numEntered.check();
+        // checks to see if input is valid against regEx and changes border color accordingly
         if(checked == false){
             thisOne.setBorder(BorderFactory.createLineBorder(numEntered.getErrorColor()));
         }else {
