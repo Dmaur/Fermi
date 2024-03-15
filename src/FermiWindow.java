@@ -1,5 +1,4 @@
 import java.awt.Dimension;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
@@ -25,7 +24,7 @@ public class FermiWindow extends JFrame {
         this.setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // create main panel anf polace it in window
+        // create main panel and place it in window
         mainPanel = new JPanel( );
         this.add(mainPanel);
         // ----------------------mig layout for main panel
@@ -40,13 +39,25 @@ public class FermiWindow extends JFrame {
         numThree = new JTextField(8);
         JButton okay = new JButton("OK");
         okay.setPreferredSize(new Dimension(100,0));
+        //hooking up ervent listener
+        okay.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                okClicked(e);
+            }
+        });
         JButton reset = new JButton("reset");
         reset.setPreferredSize(new Dimension(100,0));
+        // hooking up event listener
+        reset.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                resetClicked(e);
+            }
+        });
         leftPanel.setSize(200,400);
         // mig layout for left panel. 
         leftPanel.setLayout(new MigLayout("",
-                                                "[240]",
-                                                "30[]10[]10[]10[]10[30]140[30]"));
+                                            "[240]",
+                                            "30[]10[]10[]10[]10[30]140[30]"));
         //adding all the contents to the left panel.  
         leftPanel.add(enterMsg,"wrap");
         leftPanel.add(numOne, "wrap");
@@ -61,22 +72,37 @@ public class FermiWindow extends JFrame {
         JTextArea gameOutput = new JTextArea();
         Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
         gameOutput.setPreferredSize(new Dimension(240,280));
+        gameOutput.setBorder(border);
         rightPanel.setSize(200,400);
-       
-        // setting mig layout
-        rightPanel.setLayout(new MigLayout("","[]","[]10[]120"));
+         // setting mig layout
+        rightPanel.setLayout(new MigLayout("",
+                                                "[]",
+                                                "[]10[]120"));
         // adding contents to the rightPanel. 
         rightPanel.add(hints,"wrap");
         rightPanel.add(gameOutput);
-        gameOutput.setBorder(border);
+       
 
-
+        // 
         mainPanel.add(leftPanel);
         mainPanel.add(rightPanel);
-
-
-        
     }
+    // --------------------------------------------button event handlers
+    public void okClicked(ActionEvent e ){
+        System.out.println("ok clicked");
+    }
+
+    public void resetClicked(ActionEvent e ){
+        System.out.println("reset clicked");
+    }
+    
+
+
+
+
+
+
+
     
     public static void main(String[] args){
         FermiWindow window = new FermiWindow();
