@@ -7,7 +7,7 @@ import net.miginfocom.swing.MigLayout;
 
 
 
-public class FermiWindow extends JFrame {
+public class Window extends JFrame {
     private JPanel mainPanel;
     private JPanel leftPanel;
     private JPanel rightPanel;
@@ -16,7 +16,7 @@ public class FermiWindow extends JFrame {
     private JTextField numThree;
 
 
-    public FermiWindow(){
+    public Window(){
         // ----------window constuctor
         this.setTitle("Fermi Guessing Game");
         this.setSize(550,400);  
@@ -105,7 +105,7 @@ public class FermiWindow extends JFrame {
 
     
     public static void main(String[] args){
-        FermiWindow window = new FermiWindow();
+        Window window = new Window();
 		window.setVisible(true);
     }
 }
